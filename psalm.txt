@@ -1,0 +1,6 @@
+"psalm"
+{
+	"base"		"base"
+	"title"		"Psalm"
+	"author"	"MrMono"
+}
