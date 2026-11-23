@@ -9,4 +9,3 @@ if SERVER then
 else
     include('sh_loader.lua')
 end
-

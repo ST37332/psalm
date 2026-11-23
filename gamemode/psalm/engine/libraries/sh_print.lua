@@ -266,11 +266,11 @@ end
 --- Prints a boxed banner around the given text.
 -- @realm shared
 -- @string text Text placed inside the banner.
-function Print:Banner(text)
+function Print:Banner(text, optcolor)
 	if not Print.enabled then return end
 	text = tostring(text)
 	local line = string.rep("═", #text + 2)
-	MsgC(color.info or color.lightblue,
+	MsgC(optcolor or color.info or color.lightblue,
 		"╔" .. line .. "╗\n",
 		"║ " .. text .. " ║\n",
 		"╚" .. line .. "╝\n")
@@ -510,5 +510,3 @@ setmetatable(Print, {
 		emit("info", ...)
 	end,
 })
-
-Psalm.Print:Banner('             Welcome!             ')
