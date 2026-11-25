@@ -206,6 +206,13 @@ local sqrt  = math.sqrt
 local sin   = math.sin
 local pow   = math.pow or function(a,b) return a^b end
 
+function Psalm.Colors( sColor )
+	if not sColor then return end
+    sColor = sColor:lower()
+
+    return color[ sColor ]
+end
+
 function color:FromHex(hex)
     if not hex or type(hex) ~= "string" then return end
     hex = hex:gsub("#", ""):gsub("%s", "")

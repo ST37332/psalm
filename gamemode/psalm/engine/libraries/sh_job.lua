@@ -51,6 +51,20 @@ Jobs.DefaultModels = {
 -- Helpers
 -- ---------------------------------------------------------------------------
 
+local function cleanForNet(tbl)
+	local out = {}
+	for k, v in pairs(tbl) do
+		if not isfunction(v) then
+			if istable(v) then
+				out[k] = cleanForNet(v)
+			else
+				out[k] = v
+			end
+		end
+	end
+	return out
+end
+
 --- Converts a display name into a stable string ID.
 -- Lowercases ASCII, replaces runs of non-word characters with `_`, and trims.
 -- When the result would be empty (all non-ASCII input), falls back to a
@@ -898,22 +912,25 @@ if SERVER then
 	-- @realm server
 	-- @player ply Target player.
 	local function SendJobsToClient(ply)
-		net.Start("Psalm.Jobs.Sync")
-		net.WriteTable({
-			factions        = Jobs.factions,
-			factionIndices  = Jobs.factionIndices,
-			categories      = Jobs.categories,
-			categoryIndices = Jobs.categoryIndices,
-			teams           = Jobs.teams,
-			indices         = Jobs.indices,
-		})
-		net.Send(ply)
+	    net.Start("Psalm.Jobs.Sync")
+	    net.WriteTable({
+	        factions        = cleanForNet(Jobs.factions),
+	        factionIndices  = cleanForNet(Jobs.factionIndices),
+	        categories      = cleanForNet(Jobs.categories),
+	        categoryIndices = cleanForNet(Jobs.categoryIndices),
+	        teams           = cleanForNet(Jobs.teams),
+	        indices         = cleanForNet(Jobs.indices),
+	    })
+	    net.Send(ply)
 	end
 
 	hook.Add("PlayerInitialSpawn", "Psalm.Jobs.SendData", function(ply)
-		SendJobsToClient(ply)
-		local job = Jobs.indices[ply:Team()]
-		if job then Jobs:AddPlayer(ply, ply:Team()) end
+    	timer.Simple(0.1, function()
+    	    if not IsValid(ply) then return end
+    	    SendJobsToClient(ply)
+    	    local job = Jobs.indices[ply:Team()]
+    	    if job then Jobs:AddPlayer(ply, ply:Team()) end
+    	end)
 	end)
 
 	hook.Add("PlayerDisconnected", "Psalm.Jobs.UntrackPlayer", function(ply)

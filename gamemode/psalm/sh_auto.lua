@@ -1,5 +1,10 @@
-
 Psalm.Loader:SetBase('psalm')
+Psalm.Loader:Include("sh_meta.lua")
+Psalm.Loader:Directory("config/inv")
+Psalm.Loader:Directory("engine/libraries/thirdparty")
+Psalm.Loader:Directory("engine/meta")
+Psalm.Loader:Directory("engine/gui")
 Psalm.Loader:Directory("engine/libraries")
-Psalm.Loader:Directory("engine/config")
-Psalm.Loader:Include("engine/database/sv_database.lua")
+Psalm.Loader:Directory("config")
+
+Psalm.Addons:LoadAll()

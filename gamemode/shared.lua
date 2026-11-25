@@ -1,6 +1,7 @@
 GM.Name = 'Psalm'
 
 Psalm.Meta = Psalm.Meta or {}
+Psalm.Gui = Psalm.Gui or {}
 
 Psalm.Type = Psalm.Type or {
 	[2] = "string",
@@ -28,6 +29,12 @@ Psalm.Type = Psalm.Type or {
 }
 
 Psalm.Loader:Include("psalm/sh_auto.lua")
+
+function GM:PlayerSpawn(ply) end
+
+function GM:PlayerLoadout(ply) end
+
+function GM:GetFallDamage(ply, speed) return 0 end
 
 function GM:Initialize()
 	Psalm.Print:Banner('             Welcome!             ', Color(80, 255 , 80))
